@@ -16,7 +16,11 @@
     <div id="app" class="pa2 pa4-ns ma0">
         <h1 class="tc f3 f1-ns">Spell an animal</h1>
         <div class="tc bb bw2">
-            <input class="bn f3 f1-ns pa3 tc w-100 tracked-mega" v-model="typedInput" autocorrect="off" />
+            <input class="bn f3 f1-ns pa3 tc w-100 tracked-mega" v-model="typedInput" 
+                autocapitalize="off" 
+                autocomplete="off"
+                spellcheck="false" 
+                autocorrect="off" />
         </div>
         <div v-if="numCompleted" class="">
             <p class="f4 f2-l" v-if="numCompleted == 1">You've found <strong>1</strong> animal. Keep going!</p>
