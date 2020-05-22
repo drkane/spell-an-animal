@@ -25,20 +25,22 @@
         </div>
         <div v-if="numCompleted" class="">
             <p class="f4 f2-l" v-if="numCompleted == 1">You've found <strong>1</strong> animal. Keep going!</p>
+            <p class="f4 f2-l" v-else-if="numRemaining == 0">You've found all <strong>{{ numCompleted }}</strong> animals. Well done!</p>
+            <p class="f4 f2-l" v-else-if="numRemaining < 10">You've found <strong>{{ numCompleted }}</strong> animals. Only {{ numRemaining }} left!</p>
             <p class="f4 f2-l" v-else>You've found <strong>{{ numCompleted }}</strong> animals.</p>
             <ul class="list pa0 ma0">
                 <li v-for="(emoji, index) in completedEmoji" class="pa0 ml0 mt0 dib mr2 mr4-ns mb2 mb3-ns">
-                    <span v-if="index == 0" class="f1" style="">{{ emoji[0] }}</span>
-                    <span v-else class="f2" style="">{{ emoji[0] }}</span>
+                    <span v-if="index == 0" class="f1">{{ emoji[0] }}</span>   
+                    <span v-else class="f2">{{ emoji[0] }}</span>
                     <span v-if="index == 0" class="tracking-mega f3 f1-ns">{{ emoji[1] }}</span>
                     <span v-else class="tracking-mega f4 f2-ns">{{ emoji[1] }}</span>
                 </li>
             </ul>
         </div>
-        <div v-if="possibleEmojis" class="mt4">
+        <div v-if="numRemaining" class="mt4">
             <p class="f4 f2-l">Here's some ideas!</p>
             <ul class="list pa0 ma0">
-                <li v-for="emoji in possibleEmojis.slice(0,5)" class="pa0 ml0 mt0 dib mr2 mr4-ns mb2 mb3-ns">
+                <li v-for="emoji in remainingEmojis.slice(0,5)" class="pa0 ml0 mt0 dib mr2 mr4-ns mb2 mb3-ns">
                     <span class="f2" style="opacity: 0.6;" v-bind:title="emoji[1]">{{ emoji[0] }}</span>
                     <!-- <span class="tracking-mega f2">{{ emoji[1] }}</span> -->
                 </li>
@@ -74,8 +76,8 @@
             ["🦙", "Llama"],
             ["🦒", "Giraffe"],
             ["🐘", "Elephant"],
-            ["🦏", "Rhinoceros"],
-            ["🦛", "Hippopotamus"],
+            ["🦏", "Rhino"],
+            ["🦛", "Hippo"],
             ["🐁", "Mouse"],
             ["🐀", "Rat"],
             ["🐹", "Hamster"],
@@ -148,7 +150,10 @@
                 numCompleted: function () {
                     return this.completedEmoji.length;
                 },
-                possibleEmojis: function () {
+                numRemaining: function () {
+                    return this.remainingEmojis.length;
+                },
+                remainingEmojis: function () {
                     var completedEmoji = this.completedEmoji.map((el) => el[0]);
                     return this.emojis.filter((el) => !completedEmoji.includes(el[0]));
                 }
@@ -162,7 +167,7 @@
             watch: {
                 typedInput: function (val, oldVal) {
                     this.typedInput = val.toLowerCase();
-                    this.selectedEmoji = this.possibleEmojis.find((e) => e[1].toLowerCase().trim() == val.toLowerCase().trim());
+                    this.selectedEmoji = this.remainingEmojis.find((e) => e[1].toLowerCase().trim() == val.toLowerCase().trim());
                     if (this.selectedEmoji) {
                         this.completedEmoji.unshift(this.selectedEmoji);
                         this.typedInput = '';
