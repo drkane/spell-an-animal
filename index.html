@@ -6,12 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Animal spelling</title>
     <link rel="stylesheet" href="assets/css/tachyons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Ruluko&display=swap" rel="stylesheet">
+    <style>
+        .ruluko {
+            font-family: 'Ruluko', sans-serif;
+        }
+    </style>
     <link rel="icon" type="image/png" href="favicon.png">
     <script src="assets/js/vue.js"></script>
     <script src="assets/js/lodash.min.js"></script>
 </head>
 
-<body class="sans-serif">
+<body class="ruluko">
     <div id="app" class="pa2 pa4-ns ma0">
         <h1 class="tc f3 f1-ns">Spell an animal</h1>
         <div class="tc bb bw2">
@@ -24,7 +30,10 @@
         </div>
         <div v-if="numCompleted" class="">
             <p class="f4 f2-l" v-if="numCompleted == 1">You've found <strong>1</strong> animal. Keep going!</p>
-            <p class="f4 f2-l" v-else-if="numRemaining == 0">You've found all <strong>{{ numCompleted }}</strong> animals. Well done!</p>
+            <p class="f4 f2-l" v-else-if="numRemaining == 0">
+                You've found all <strong>{{ numCompleted }}</strong> animals. Well done! 
+                <button v-on:click.prevent="completedEmoji = []" class="button-reset link bn bg-transparent blue underline">Start again</button>
+            </p>
             <p class="f4 f2-l" v-else-if="numRemaining < 10">You've found <strong>{{ numCompleted }}</strong> animals. Only {{ numRemaining }} left!</p>
             <p class="f4 f2-l" v-else>You've found <strong>{{ numCompleted }}</strong> animals.</p>
             <ul class="list pa0 ma0">
