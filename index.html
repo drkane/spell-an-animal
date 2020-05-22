@@ -169,7 +169,10 @@
             watch: {
                 typedInput: function (val, oldVal) {
                     this.typedInput = val.toLowerCase();
-                    this.selectedEmoji = this.remainingEmojis.find((e) => e[1].toLowerCase().trim() == val.toLowerCase().trim());
+                    this.selectedEmoji = this.remainingEmojis.find((e) => (
+                        (e[1].toLowerCase().trim() == val.toLowerCase().trim()) ||
+                        (e[0] == val.trim())
+                    ));
                     if (this.selectedEmoji) {
                         this.completedEmoji.unshift(this.selectedEmoji);
                         this.typedInput = '';
