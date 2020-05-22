@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>🐱 Animal spelling</title>
+    <link rel="stylesheet" href="https://unpkg.com/tachyons/css/tachyons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"
+        integrity="sha256-VeNaFBVDhoX3H+gJ37DpT/nTuZTdjYro9yBruHjVmoQ=" crossorigin="anonymous"></script>
+</head>
+
+<body class="sans-serif">
+    <div id="app" class="pa4 ma0">
+        <h1 class="tc">Spell an animal</h1>
+        <div class="tc bb bw2">
+            <input class="bn f1 pa3 tc w-100 tracked-mega" v-model="typedInput" />
+        </div>
+        <div v-if="numCompleted" class="">
+            <p class="f2" v-if="numCompleted == 1">You've found <strong>1</strong> animal. Keep going!</p>
+            <p class="f2" v-else>You've found <strong>{{ numCompleted }}</strong> animals.</p>
+            <ul class="list pa0 ma0">
+                <li v-for="(emoji, index) in completedEmoji" class="pa0 ml0 mt0 dib mr4 mb3">
+                    <span v-if="index == 0" class="" style="font-size: 128px;">{{ emoji[0] }}</span>
+                    <span v-else class="" style="font-size: 52px;">{{ emoji[0] }}</span>
+                    <span v-if="index == 0" class="tracking-mega f1">{{ emoji[1] }}</span>
+                    <span v-else class="tracking-mega f2">{{ emoji[1] }}</span>
+                </li>
+            </ul>
+        </div>
+        <div v-if="possibleEmojis" class="mt4">
+            <p class="f2">Here's some ideas!</p>
+            <ul class="list pa0 ma0">
+                <li v-for="emoji in possibleEmojis.slice(0,5)" class="pa0 ml0 mt0 dib mr3 mb3">
+                    <span class="" style="font-size: 48px; opacity: 0.6;" v-bind:title="emoji[1]">{{ emoji[0] }}</span>
+                    <!-- <span class="tracking-mega f2">{{ emoji[1] }}</span> -->
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        var EMOJIS = [
+            ["🐒", "Monkey"],
+            ["🦍", "Gorilla"],
+            ["🦧", "Orangutan"],
+            ["🐶", "Dog"],
+            ["🐩", "Poodle"],
+            ["🐺", "Wolf"],
+            ["🦊", "Fox"],
+            ["🦝", "Raccoon"],
+            ["🐱", "Cat"],
+            ["🦁", "Lion"],
+            ["🐯", "Tiger"],
+            ["🐆", "Leopard"],
+            ["🐎", "Horse"],
+            ["🦄", "Unicorn"],
+            ["🦓", "Zebra"],
+            ["🦌", "Deer"],
+            ["🐂", "Ox"],
+            ["🐃", "Water Buffalo"],
+            ["🐄", "Cow"],
+            ["🐖", "Pig"],
+            ["🐗", "Boar"],
+            ["🐑", "Sheep"],
+            ["🐐", "Goat"],
+            ["🐪", "Camel"],
+            ["🦙", "Llama"],
+            ["🦒", "Giraffe"],
+            ["🐘", "Elephant"],
+            ["🦏", "Rhinoceros"],
+            ["🦛", "Hippopotamus"],
+            ["🐁", "Mouse"],
+            ["🐀", "Rat"],
+            ["🐹", "Hamster"],
+            ["🐰", "Rabbit"],
+            ["🐿", "Chipmunk"],
+            ["🦔", "Hedgehog"],
+            ["🦇", "Bat"],
+            ["🐻", "Bear"],
+            ["🐨", "Koala"],
+            ["🐼", "Panda"],
+            ["🦥", "Sloth"],
+            ["🦦", "Otter"],
+            ["🦨", "Skunk"],
+            ["🦘", "Kangaroo"],
+            ["🦡", "Badger"],
+            ["🦃", "Turkey"],
+            ["🐔", "Chicken"],
+            ["🐓", "Rooster"],
+            ["🐤", "Chick"],
+            ["🐦", "Bird"],
+            ["🐧", "Penguin"],
+            ["🕊", "Dove"],
+            ["🦅", "Eagle"],
+            ["🦆", "Duck"],
+            ["🦢", "Swan"],
+            ["🦉", "Owl"],
+            ["🦩", "Flamingo"],
+            ["🦚", "Peacock"],
+            ["🦜", "Parrot"],
+            ["🐸", "Frog"],
+            ["🐊", "Crocodile"],
+            ["🐢", "Turtle"],
+            ["🦎", "Lizard"],
+            ["🐍", "Snake"],
+            ["🐉", "Dragon"],
+            ["🦕", "Sauropod"],
+            ["🦖", "T-Rex"],
+            ["🐳", "Whale"],
+            ["🐬", "Dolphin"],
+            ["🐟", "Fish"],
+            ["🐠", "Tropical Fish"],
+            ["🐡", "Blowfish"],
+            ["🦈", "Shark"],
+            ["🐙", "Octopus"],
+            ["🐌", "Snail"],
+            ["🦋", "Butterfly"],
+            ["🐛", "Bug"],
+            ["🐜", "Ant"],
+            ["🐝", "Bee"],
+            ["🐞", "Ladybird"],
+            ["🦗", "Cricket"],
+            ["🕷", "Spider"],
+            ["🦂", "Scorpion"],
+            ["🦟", "Mosquito"],
+            ["🦀", "Crab"],
+            ["🦞", "Lobster"],
+            ["🦐", "Shrimp"],
+            ["🦑", "Squid"],
+        ];
+        var app = new Vue({
+            el: '#app',
+            data: {
+                typedInput: "",
+                message: 'Hello Vue!',
+                emojis: _.shuffle(EMOJIS),
+                selectedEmoji: null,
+                completedEmoji: [],
+            },
+            computed: {
+                numCompleted: function () {
+                    return this.completedEmoji.length;
+                },
+                possibleEmojis: function () {
+                    var completedEmoji = this.completedEmoji.map((el) => el[0]);
+                    return this.emojis.filter((el) => !completedEmoji.includes(el[0]));
+                }
+            },
+            methods: {
+                selectEmoji: function (event) {
+                    event.preventDefault();
+                    this.selectedEmoji = this.emojis.find((el) => el[0] == event.target.innerText);
+                }
+            },
+            watch: {
+                typedInput: function (val, oldVal) {
+                    this.typedInput = val.toLowerCase();
+                    this.selectedEmoji = this.possibleEmojis.find((e) => e[1].toLowerCase().trim() == val.toLowerCase().trim());
+                    if (this.selectedEmoji) {
+                        this.completedEmoji.unshift(this.selectedEmoji);
+                        this.typedInput = '';
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
