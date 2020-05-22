@@ -4,36 +4,37 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>🐱 Animal spelling</title>
+    <title>Animal spelling</title>
     <link rel="stylesheet" href="https://unpkg.com/tachyons/css/tachyons.min.css">
+    <link rel="icon" type="image/png" href="favicon.png">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.15/lodash.min.js"
         integrity="sha256-VeNaFBVDhoX3H+gJ37DpT/nTuZTdjYro9yBruHjVmoQ=" crossorigin="anonymous"></script>
 </head>
 
 <body class="sans-serif">
-    <div id="app" class="pa4 ma0">
-        <h1 class="tc">Spell an animal</h1>
+    <div id="app" class="pa2 pa4-ns ma0">
+        <h1 class="tc f3 f1-ns">Spell an animal</h1>
         <div class="tc bb bw2">
-            <input class="bn f1 pa3 tc w-100 tracked-mega" v-model="typedInput" />
+            <input class="bn f3 f1-ns pa3 tc w-100 tracked-mega" v-model="typedInput" autocorrect="off" />
         </div>
         <div v-if="numCompleted" class="">
-            <p class="f2" v-if="numCompleted == 1">You've found <strong>1</strong> animal. Keep going!</p>
-            <p class="f2" v-else>You've found <strong>{{ numCompleted }}</strong> animals.</p>
+            <p class="f4 f2-l" v-if="numCompleted == 1">You've found <strong>1</strong> animal. Keep going!</p>
+            <p class="f4 f2-l" v-else>You've found <strong>{{ numCompleted }}</strong> animals.</p>
             <ul class="list pa0 ma0">
-                <li v-for="(emoji, index) in completedEmoji" class="pa0 ml0 mt0 dib mr4 mb3">
-                    <span v-if="index == 0" class="" style="font-size: 128px;">{{ emoji[0] }}</span>
-                    <span v-else class="" style="font-size: 52px;">{{ emoji[0] }}</span>
-                    <span v-if="index == 0" class="tracking-mega f1">{{ emoji[1] }}</span>
-                    <span v-else class="tracking-mega f2">{{ emoji[1] }}</span>
+                <li v-for="(emoji, index) in completedEmoji" class="pa0 ml0 mt0 dib mr2 mr4-ns mb2 mb3-ns">
+                    <span v-if="index == 0" class="f1" style="">{{ emoji[0] }}</span>
+                    <span v-else class="f2" style="">{{ emoji[0] }}</span>
+                    <span v-if="index == 0" class="tracking-mega f3 f1-ns">{{ emoji[1] }}</span>
+                    <span v-else class="tracking-mega f4 f2-ns">{{ emoji[1] }}</span>
                 </li>
             </ul>
         </div>
         <div v-if="possibleEmojis" class="mt4">
-            <p class="f2">Here's some ideas!</p>
+            <p class="f4 f2-l">Here's some ideas!</p>
             <ul class="list pa0 ma0">
-                <li v-for="emoji in possibleEmojis.slice(0,5)" class="pa0 ml0 mt0 dib mr3 mb3">
-                    <span class="" style="font-size: 48px; opacity: 0.6;" v-bind:title="emoji[1]">{{ emoji[0] }}</span>
+                <li v-for="emoji in possibleEmojis.slice(0,5)" class="pa0 ml0 mt0 dib mr2 mr4-ns mb2 mb3-ns">
+                    <span class="f2" style="opacity: 0.6;" v-bind:title="emoji[1]">{{ emoji[0] }}</span>
                     <!-- <span class="tracking-mega f2">{{ emoji[1] }}</span> -->
                 </li>
             </ul>
